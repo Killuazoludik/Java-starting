@@ -1,0 +1,129 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    private String title;
+    private String author;
+    private String isbn;
+
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String toString() {
+        return "Название: " + title + ", Автор: " + author + ", ISBN: " + isbn;
+    }
+}
+
+class Library {
+    private ArrayList<Book> books;
+
+    public Library() {
+        this.books = new ArrayList<>();
+    }
+
+    public void addBook(Book book) {
+        books.add(book);
+        System.out.println("Книга \"" + book.getTitle() + "\" добавлена в библиотеку.");
+    }
+
+    public void listBooks() {
+        if (books.isEmpty()) {
+            System.out.println("Библиотека пуста.");
+        } else {
+            System.out.println("Список книг в библиотеке:");
+            for (Book book : books) {
+                System.out.println(book);
+            }
+        }
+    }
+
+    public void searchBook(String title) {
+        boolean found = false;
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                System.out.println("Найдена книга: " + book);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Книга с названием \"" + title + "\" не найдена.");
+        }
+    }
+
+    public void removeBook(String title) {
+        boolean removed = false;
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                books.remove(book);
+                System.out.println("Книга \"" + title + "\" удалена из библиотеки.");
+                removed = true;
+                break;
+            }
+        }
+        if (!removed) {
+            System.out.println("Книга с названием \"" + title + "\" не найдена.");
+        }
+    }
+}
+
+public class LibraryManager {
+    public static void main(String[] args) {
+        Library library = new Library();
+        Scanner scanner = new Scanner(System.in);
+        String title, author, isbn;
+
+        while (true) {
+            System.out.println("\nМеню:");
+            System.out.println("1. Добавить книгу");
+            System.out.println("2. Показать список книг");
+            System.out.println("3. Найти книгу по названию");
+            System.out.println("4. Удалить книгу");
+            System.out.println("5. Выйти");
+
+            System.out.print("Выберите действие: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();  // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Введите название книги: ");
+                    title = scanner.nextLine();
+                    System.out.print("Введите автора книги: ");
+                    author = scanner.nextLine();
+                    System.out.print("Введите ISBN книги: ");
+                    isbn = scanner.nextLine();
+                    Book book = new Book(title, author, isbn);
+                    library.addBook(book);
+                    break;
+                case 2:
+                    library.listBooks();
+                    break;
+                case 3:
+                    System.out.print("Введите название книги для поиска: ");
+                    title = scanner.nextLine();
+                    library.searchBook(title);
+                    break;
+                case 4:
+                    System.out.print("Введите название книги для удаления: ");
+                    title = scanner.nextLine();
+                    library.removeBook(title);
+                    break;
+                case 5:
+                    System.out.println("Выход из программы...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Ошибка: Неверный выбор.");
+            }
+        }
+    }
+}
